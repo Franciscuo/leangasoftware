@@ -100,5 +100,14 @@ dataCtrl.average = (data) => {
     })
 }
 
+dataCtrl.report = () => {
+    return new Promise(async(resolve, reject) => {
+        try {
+
+        } catch (e) {
+            return reject(e);
+        }
+    })
+}
 
 module.exports = dataCtrl;

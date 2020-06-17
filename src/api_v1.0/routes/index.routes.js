@@ -36,4 +36,15 @@ router.get('/precio_promedio_m2/:data', (req, res) => {
         })
 });
 
+// 
+router.get('/reporte/:data', (req, res) => {
+    dataCtrl.report(req.params.data)
+        .then(info => {
+            response.success(res, info, 200)
+        })
+        .catch((e) => {
+            response.error(res, e, 400)
+        })
+});
+
 module.exports = router;
