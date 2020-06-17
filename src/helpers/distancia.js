@@ -11,16 +11,4 @@ const distancia = (posicion1, posicion2) => {
     return radio * C;
 }
 
-// posicion1 = {
-//     latitud: 47.1166667,
-//     longitud: 8.8833333,
-// }
-
-// posicion2 = {
-//     latitud: 42.1166667,
-//     longitud: 20.8833333
-// }
-
-// console.log(distancia(posicion1, posicion2))
-
 module.exports = distancia;
