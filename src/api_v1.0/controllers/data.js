@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const ResourceAccomodation = require('../../database/models/ResourceAccommodation');
-const { query } = require('express');
-const { all } = require('../routes/index.routes');
+const distancia = require('../../helpers/distancia')
 
 
 const dataCtrl = {};
@@ -50,6 +49,53 @@ dataCtrl.all = () => {
             return reject('No se encontraron datos');
         } catch (e) {
             return reject(e);
+        }
+    })
+}
+
+dataCtrl.average = (data) => {
+    return new Promise(async(resolve, reject) => {
+        try {
+            if (!data) return reject('Peticion erronea');
+            const filters = data.split('&');
+            if (filters.length < 3) return reject('Peticion erronea');
+
+            let key = [];
+            let value = [];
+
+            filters.forEach(element => {
+                key.push(element.split('=')[0]);
+                value.push(element.split('=')[1]);
+            });
+            if (!key.includes('latitud') || !key.includes('longitud') || !key.includes('distancia')) return reject('Peticion erronea');
+            if (value[0] == undefined || value[1] == undefined || value[2] == undefined) return reject('Peticion erronea');
+
+            const posicion1 = {
+                latitud: value[key.indexOf('latitud')],
+                longitud: value[key.indexOf('longitud')],
+            }
+            let posicion2 = {
+                latitud: 0,
+                longitud: 0,
+            }
+            let precio = 0;
+            let cantidadAlquileres = 0;
+            const dataDB = await ResourceAccomodation.find();
+            dataDB.forEach((element, index) => {
+                posicion2.latitud = element.latitud;
+                posicion2.longitud = element.longitud;
+                if (distancia(posicion1, posicion2) <= value[key.indexOf('distancia')]) {
+                    precio = precio + element.precio;
+                    cantidadAlquileres += 1;
+                }
+            })
+            precioPromediom2 = {
+                precioPromedio: precio / cantidadAlquileres,
+                cantidadAlquileres: cantidadAlquileres,
+            };
+            resolve(precioPromediom2);
+        } catch (e) {
+            reject(`Error ${e}`);
         }
     })
 }

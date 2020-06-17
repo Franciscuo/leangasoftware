@@ -9,7 +9,7 @@ const loadCsv = require('./api_v1.0/csv');
 
 //Inicializacion
 const app = express();
-if (process.env.NODE_ENV != 'test') {
+if (process.env.NODE_ENV != 'production') {
     app.use(morgan('dev'));
 }
 connectDb();

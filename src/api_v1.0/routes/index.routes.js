@@ -25,4 +25,15 @@ router.get('/search', (req, res) => {
         })
 });
 
+// precio_promedio_m2/latitud=40.37&longitud=-3.5&distancia=8
+router.get('/precio_promedio_m2/:data', (req, res) => {
+    dataCtrl.average(req.params.data)
+        .then(info => {
+            response.success(res, info, 200)
+        })
+        .catch((e) => {
+            response.error(res, e, 400)
+        })
+});
+
 module.exports = router;
